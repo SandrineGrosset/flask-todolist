@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste de Tâches</title>
+    <!-- 🔗 Lien vers le fichier CSS dans /static/style.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Ma liste de tâches</h1>
+
+    <form method="POST" action="{{ url_for('add_task') }}">                     #
+        <input type="text" name="title" placeholder="Nouvelle tâche" required>
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {% if task.completed %}
+                    <s>{{ task.title }}</s>
+                {% else %}
+                    {{ task.title }}
+                    <form method="POST" action="{{ url_for('complete_task', task_id=task.id) }}" style="display:inline;">
+                        <button type="submit">Terminer</button>
+                    </form>
+                {% endif %}
+                <form method="POST" action="{{ url_for('delete_task', task_id=task.id) }}" style="display:inline;">
+                    <button type="submit">Supprimer</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+
